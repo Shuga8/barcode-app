@@ -15,6 +15,7 @@ const Home = () => {
     const handleSuccess = (result) => {
       scanner.clear();
       setScanResult(result);
+      document.removeChild("#barcode-reader");
     };
 
     const handleError = (error) => {
@@ -22,8 +23,6 @@ const Home = () => {
     };
 
     scanner.render(handleSuccess, handleError);
-
-    // Clean up the scanner on component unmount
     return () => {
       scanner
         .clear()
@@ -35,30 +34,86 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="w-full h-[100dvh] bg-[#f0f0f0] flex flex-col items-center justify-center py-10 px-2 gap-y-3">
-      <div className="logo flex flex-row gap-x-2 items-center">
+    <div
+      style={{
+        padding: "15px 3px 0px 3px",
+      }}
+    >
+      <div
+        style={{
+          width: "100%",
+
+          display: "flex",
+          justifyContent: "center",
+          flexDirection: "row",
+          gap: "20px",
+          placeItems: "center",
+        }}
+      >
         <img
           src={logo}
           alt="QR Code Logo"
-          className="w-[50px] h-[50px] object-contain"
+          style={{
+            width: "50px",
+            height: "50px",
+            objectFit: "contain",
+          }}
         />
-        <h1 className="text-[#0a0a0a] text-[14px] uppercase font-semibold">
+        <h1
+          style={{
+            fontSize: "18px",
+          }}
+        >
           Barcode Scanner
         </h1>
       </div>
-      {/* Ensure that the scanner only renders once */}
-      <div id="barcode-reader" className="reader"></div>
+
+      <div
+        style={{
+          width: "100%",
+          textAlign: "center",
+          color: "red",
+          fontSize: "10px",
+          border: "none",
+          marginBottom: "20px",
+          textTransform: "uppercase",
+        }}
+      >
+        Use On Mobile Phone / Similar Device For Better Performance
+      </div>
+
+      <div
+        id="barcode-reader"
+        style={{
+          maxHeight: "fit-content",
+          overflowY: "hidden",
+        }}
+      ></div>
       {scanResult ? (
         <div
           id="scan-result"
-          className="scan-result text-[#0a0a0a] text-sm font-medium mt-4"
+          style={{
+            width: "100vw",
+            display: "flex",
+            justifyContent: "center",
+            flexDirection: "column",
+            gap: "10px",
+            textAlign: "center",
+          }}
         >
-          {scanResult}
+          {`Barcode Result: ${scanResult}`}
+          <div
+            onClick={() => window.location.reload()}
+            style={{
+              color: "red",
+              fontSize: "12px",
+            }}
+          >
+            Refesh
+          </div>
         </div>
       ) : (
-        <>
-          <span>Scan Now</span>
-        </>
+        ""
       )}
     </div>
   );
